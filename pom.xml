@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>inc.glamdring</groupId>
+  <artifactId>gwt-couchdb-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>gwt-couchdb-parent</name><description>gwt-couchdb Terraformed... by jim@keyframe... on x86_64 x86_64 GNU/Linux... for  couchdb-js,couchdb,couchdb-js-test,couchdb-test... </description>
+  <url>http://keyframe</url><scm><tag>HEAD</tag></scm>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>gwt-couchdb-couchdb-js</module>
+    <module>gwt-couchdb-couchdb</module>
+    <module>gwt-couchdb-couchdb-js-test</module>
+    <module>gwt-couchdb-couchdb-test</module>
+  </modules>
+</project>
