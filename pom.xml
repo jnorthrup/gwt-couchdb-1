@@ -16,9 +16,9 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>gwt-couchdb-couchdb-js</module>
-    <module>gwt-couchdb-couchdb</module>
-    <module>gwt-couchdb-couchdb-js-test</module>
-    <module>gwt-couchdb-couchdb-test</module>
+    <module>couchdb-js</module>
+    <module>couchdb</module>
+    <module>couchdb-js-test</module>
+    <module>couchdb-test</module>
   </modules>
 </project>
