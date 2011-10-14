@@ -9,7 +9,7 @@ public class Util {
 	 * @return
 	 */
 	public static boolean equals(Object a, Object b) {
-		return ((a == null && b == null) || (a != null && a.equals(b)));
+		return a == null && b == null || a != null && a.equals(b);
 	}
 
 	/**

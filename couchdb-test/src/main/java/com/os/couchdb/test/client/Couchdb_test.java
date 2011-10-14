@@ -441,8 +441,9 @@ public class Couchdb_test implements EntryPoint {
 	protected void createdDoc() {
 		BaseDocument doc = new BaseDocument();
 		doc.setId("test");
-		doc.getModel().set("key1", "1");
-		doc.getModel().set("key2", 2);
+    JSOModel model = doc.getModel();
+    model.set("key1", "1");
+		model.set("key2", 2);
 		m_db.createDocument(doc, new AsyncCallback<BaseDocument>() {
 			@Override
 			public void onFailure(Throwable pCaught) {

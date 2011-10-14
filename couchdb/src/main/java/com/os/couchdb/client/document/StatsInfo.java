@@ -8,22 +8,20 @@ import com.os.couchdb.client.model.BaseModel;
 import com.os.couchdb.client.model.JSOModel;
 
 public class StatsInfo {
-	public static final Map<String,String[]> __KNOWN_KEYS;
-	static {
-		__KNOWN_KEYS = new HashMap<String, String[]>();
-		__KNOWN_KEYS.put("httpd_request_methods", new String[] {
+	public static final Map<String,String[]> __KNOWN_KEYS = new HashMap<String, String[]>(){{
+      put("httpd_request_methods", new String[] {
 				"MOVE","GET","POST","PUT","DELETE","HEAD","COPY"
 		});
-		__KNOWN_KEYS.put("couchdb", new String[] {
+ put("couchdb", new String[] {
 				"open_databases","open_os_files","database_writes","database_reads","request_time"
 		});
-		__KNOWN_KEYS.put("httpd_status_codes", new String[] {
+	 put("httpd_status_codes", new String[] {
 				"409","412","202","404","304","200","201","500","301","403","401","405","400"
 		});
-		__KNOWN_KEYS.put("httpd", new String[] {
+		 put("httpd", new String[] {
 				"clients_requesting_changes","requests","view_reads","temporary_view_reads","bulk_requests"
 		});
-	}
+  }};
 	
 	public static class StatsInfoRecord extends BaseModel {
 		private StatsInfoRecord(JSOModel pModel) {

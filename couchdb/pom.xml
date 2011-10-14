@@ -87,21 +87,65 @@
           <version>2.4.0</version>
       </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <fork>true</fork>
-          <meminitial>1024m</meminitial>
-          <maxmem>1024m</maxmem>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+
+    <build>
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+
+        <plugins>
+
+            <!-- GWT Maven Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.4.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <!--<goal>test</goal>-->
+                            <!--<goal>i18n</goal>-->
+                            <!--<goal>generateAsync</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- Plugin configuration. There are many available options, see
+            gwt-maven-plugin documentation at codehaus.org -->
+                <!--        <configuration>
+                  <runTarget>Minimal.html</runTarget>
+                  <hostedWebapp>${webappDirectory}</hostedWebapp>
+                  <i18nMessagesBundle>foo.acme.client.Messages</i18nMessagesBundle>
+                </configuration>-->
+            </plugin>
+
+            <!-- Copy static web files before executing gwt:run -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <webappDirectory>${webappDirectory}</webappDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
   <reporting>
     <plugins>
       <plugin>

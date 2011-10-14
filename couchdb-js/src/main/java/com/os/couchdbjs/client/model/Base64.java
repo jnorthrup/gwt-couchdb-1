@@ -205,14 +205,15 @@ public class Base64 {
       sbiCrop = (byte)(source[i + off] & 0x7f);
       sbiDecode = decodabet[sbiCrop];
       if ( sbiDecode >= -5 ) {
-        if ( sbiDecode < -1 )
+        if ( sbiDecode < -1 ) {
           continue;
+        }
         if ( sbiCrop == 61 ) {
           int bytesLeft = len - i;
           byte lastByte = (byte)(source[(len - 1) + off] & 0x7f);
           if ( b4Posn == 0 || b4Posn == 1 )
             throw new Base64DecoderException((new StringBuilder()).append("invalid padding byte '=' at byte offset ").append(i).toString());
-          if ( b4Posn == 3 && bytesLeft > 2 || b4Posn == 4 && bytesLeft > 1 )
+          if (lockedIn(b4Posn, bytesLeft))
             throw new Base64DecoderException((new StringBuilder()).append("padding byte '=' falsely signals end of encoded value at offset ").append(i).toString());
           if ( lastByte != 61 && lastByte != 10 )
             throw new Base64DecoderException("encoded value has invalid trailing byte");
@@ -238,4 +239,8 @@ public class Base64 {
     java.lang.System.arraycopy(outBuff, 0, out, 0, outBuffPosn);
     return (out);
   }
- }
+
+  private static boolean lockedIn(int b4Posn, int bytesLeft) {
+    return b4Posn == 3 && bytesLeft > 2 || b4Posn == 4 && bytesLeft > 1;
+  }
+}

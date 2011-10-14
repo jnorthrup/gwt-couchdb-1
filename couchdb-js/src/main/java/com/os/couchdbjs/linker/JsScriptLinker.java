@@ -1,5 +1,6 @@
 package com.os.couchdbjs.linker;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -92,7 +93,7 @@ public class JsScriptLinker extends AbstractLinker {
 		// Find the single CompilationResult
 		Set<CompilationResult> results = artifacts.find(CompilationResult.class);
 		if (results.size() != 1) {
-			logger = logger.branch(TreeLogger.ERROR, "The module must have exactly one distinct" + " permutation when using the " + getDescription() + " Linker.",
+			logger = logger.branch(TreeLogger.ERROR, MessageFormat.format("The module must have exactly one distinct permutation when using the {0} Linker.", getDescription()),
 			    null);
 			throw new UnableToCompleteException();
 		}

@@ -1,29 +1,28 @@
 package com.os.couchdb.client.db;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.gwt.http.client.URL;
+import com.os.couchdb.client.document.FulltextLucene;
+
+import static com.os.couchdb.client.document.FulltextLucene.Defaults.__TYPES_OPTS;
 
 public class LuceneFetchOptions {
 	private static class SortField {
-		String m_fieldName;
+    String m_fieldName;
 		String m_type = "string";
 		boolean m_descending;
+    public static final Set<String> FTYPES = new HashSet<String>    (Arrays.asList(__TYPES_OPTS ));
 
-		private String getValidType(String pType) {
-			if("float".equalsIgnoreCase(pType)) {
-				return "float";
-			} else if("double".equalsIgnoreCase(pType)) {
-				return "double";
-			} else if("int".equalsIgnoreCase(pType)) {
-				return "int";
-			} else if("long".equalsIgnoreCase(pType)) {
-				return "long";
-			} else if("date".equalsIgnoreCase(pType)) {
-				return "date";
-			}
-			return "string";
+    private String getValidType(String pType) {
+
+      String s = pType.toLowerCase();
+      return FTYPES.contains(s)? s :"string";
 		}
 		
 		SortField(String pFieldName,String pType,boolean pDescending) {
