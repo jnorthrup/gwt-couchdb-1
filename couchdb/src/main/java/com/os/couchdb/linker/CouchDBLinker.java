@@ -141,4 +141,5 @@ public final class CouchDBLinker extends AbstractLinker {
       }
     }
   }
+
 }

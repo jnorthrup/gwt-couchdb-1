@@ -8,6 +8,43 @@ import com.os.couchdbjs.client.model.BaseDocument;
 public class LuceneText extends AbstractFulltext {
 	@Override
 	public LuceneDocument index(BaseDocument pDoc) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		if(pDoc.getModel().hasKey("tag")) {
 			LuceneDocument ldoc = createLuceneDocument();
 			Options opts = new Options();
