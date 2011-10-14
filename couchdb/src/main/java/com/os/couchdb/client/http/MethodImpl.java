@@ -1,5 +1,6 @@
 package com.os.couchdb.client.http;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class MethodImpl implements Method {
 
 	public MethodImpl(Resource pResource, String pMethod) {
 		String uri = pResource.getUri();
-		if( pResource.getQuery() != null ) {
+		if(null != pResource.getQuery()) {
 		    uri += "?" + pResource.getQuery();
 		}
     m_requestBuilder = new MethodRequestBuilder(pMethod, uri);
@@ -52,7 +53,7 @@ public class MethodImpl implements Method {
 	}
 
 	public MethodImpl headers(Map<String, String> pHeaders) {
-		if (pHeaders != null) {
+		if (null != pHeaders) {
 			for (Entry<String, String> entry : pHeaders.entrySet()) {
 				header(entry.getKey(), entry.getValue());
 			}
@@ -125,7 +126,7 @@ public class MethodImpl implements Method {
 		});
     GWT.log("Sending http request: " + m_requestBuilder.getHTTPMethod()+" "+m_requestBuilder.getUrl(), null);
     String content = m_requestBuilder.getRequestData();
-    if( content!=null && content.length()>0) {
+    if(null != content && 0 < content.length()) {
         GWT.log(content, null);
     }
     m_request = m_requestBuilder.send();
@@ -196,7 +197,7 @@ public class MethodImpl implements Method {
 				@Override
 				protected JSONValue parseResult(Response pResponse) throws Exception {
 					String content = pResponse.getText();
-					if (content != null && content.length() > 0) {
+					if (null != content && 0 < content.length()) {
 						return JSONParser.parse(content);
 					}
 					return null;
@@ -219,10 +220,10 @@ public class MethodImpl implements Method {
 				@Override
 				protected JSOModel parseResult(Response pResponse) throws Exception {
 					JSONValue jsonValue = JSONParser.parse(pResponse.getText());
-					if(jsonValue.isObject() != null) {
+					if(null != jsonValue.isObject()) {
 						return JSOModel.fromJson(jsonValue);
 					} else {
-						throw new ResponseFormatException("Response was NOT a valid JSON document : '" + pResponse.getText() + "'", null);
+						throw new ResponseFormatException(MessageFormat.format("Response was NOT a valid JSON document : ''{0}''", pResponse.getText()), null);
 					}
 				}
 
@@ -245,7 +246,7 @@ public class MethodImpl implements Method {
 					try {
 						return XMLParser.parse(pResponse.getText());
 					} catch (Throwable e) {
-						throw new ResponseFormatException("Response was NOT a valid XML document : '" + pResponse.getText() + "'", e);
+						throw new ResponseFormatException(MessageFormat.format("Response was NOT a valid XML document : ''{0}''", pResponse.getText()), e);
 					}
 				}
 
@@ -270,9 +271,9 @@ public class MethodImpl implements Method {
 				@Override
 				protected T parseResult(Response pResponse) throws Exception {
 					JSONValue jsonValue = JSONParser.parse(pResponse.getText());
-					if(jsonValue.isObject() != null) {
+					if(null != jsonValue.isObject()) {
 						JSOModel jsoModel = JSOModel.fromJson(jsonValue);
-						if (pFactory != null) {
+						if (null != pFactory) {
 							return pFactory.createInstance(jsoModel);
 						} else {
 							return (T)new BaseModel(jsoModel);
@@ -299,11 +300,11 @@ public class MethodImpl implements Method {
 				@Override
 				protected List<T> parseResult(Response pResponse) throws Exception {
 					JSONValue jsonValue = JSONParser.parse(pResponse.getText());
-					if(jsonValue.isArray() != null) {
+					if(null != jsonValue.isArray()) {
 						JsArray<JSOModel> jsoArray = jsonValue.isArray().getJavaScriptObject().cast();
 						List<T> baseModelList = new ArrayList<T>(jsoArray.length());
 						for (int i = 0; i < jsoArray.length(); i++) {
-							if (pFactory != null) {
+							if (null != pFactory) {
 								baseModelList.add(pFactory.createInstance(jsoArray.get(i)));
 							} else {
 								baseModelList.add((T)new BaseModel(jsoArray.get(i)));
@@ -332,7 +333,7 @@ public class MethodImpl implements Method {
 				@Override
 				protected List<String> parseResult(Response pResponse) throws Exception {
 					JSONValue jsonValue = JSONParser.parse(pResponse.getText());
-					if(jsonValue.isArray() != null) {
+					if(null != jsonValue.isArray()) {
 						JsArrayString jsoArray = jsonValue.isArray().getJavaScriptObject().cast();
 						List<String> baseModelList = new ArrayList<String>(jsoArray.length());
 						for (int i = 0; i < jsoArray.length(); i++) {

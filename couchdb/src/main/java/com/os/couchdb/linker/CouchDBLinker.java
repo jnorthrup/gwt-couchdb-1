@@ -3,6 +3,7 @@ package com.os.couchdb.linker;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public final class CouchDBLinker extends AbstractLinker {
   
   private String getCfgValue(ConfigurationProperty pProp) {
   	List<String> vals = pProp.getValues();
-  	if(vals == null || vals.isEmpty()) {
+  	if(null == vals || vals.isEmpty()) {
   		return null;
   	}
   	return vals.get(0);
@@ -58,17 +59,17 @@ public final class CouchDBLinker extends AbstractLinker {
   	for(ConfigurationProperty prop : props) {
   		if("couchdb_name".equals(prop.getName())) {
   			String dbName = getCfgValue(prop);
-  			if(dbName != null) {
+  			if(null != dbName) {
   				m_dbName = dbName;
   			}
   		} else if("couchdb_host".equals(prop.getName())) {
   			String dbHost = getCfgValue(prop);
-  			if(dbHost != null) {
+  			if(null != dbHost) {
   				m_host = dbHost;
   			}
   		} else if("couchdb_port".equals(prop.getName())) {
   			String dbPort = getCfgValue(prop);
-  			if(dbPort != null) {
+  			if(null != dbPort) {
   				try {
   					m_port = Integer.parseInt(dbPort);
   				} catch(Exception ex) {
@@ -76,12 +77,12 @@ public final class CouchDBLinker extends AbstractLinker {
   			}
   		} else if("couchdb_admin".equals(prop.getName())) {
   			String dbAdmin = getCfgValue(prop);
-  			if(dbAdmin != null) {
+  			if(null != dbAdmin) {
   				m_adminName = dbAdmin;
   			}
   		} else if("couchdb_pass".equals(prop.getName())) {
   			String dbPass = getCfgValue(prop);
-  			if(dbPass != null) {
+  			if(null != dbPass) {
   				m_adminPswd = dbPass;
   			}
   		}
@@ -100,13 +101,13 @@ public final class CouchDBLinker extends AbstractLinker {
   private void uploadApp(TreeLogger pLogger, LinkerContext pContext, SortedSet<EmittedArtifact> pArtifacts) throws UnableToCompleteException {
     pLogger = pLogger.branch(TreeLogger.DEBUG, "uploadApp", null);
     Database db = new Database(m_host,m_port,m_dbName);
-    if(m_adminName != null) {
+    if(null != m_adminName) {
     	Map<String,String> pm = new HashMap<String, String>();
     	pm.put("name", m_adminName);
     	pm.put("password", m_adminPswd);
     	Response resp = db.getServer().post("/_session",pm);
-    	if(resp.getCode() != 200) {
-    		pLogger.log(TreeLogger.WARN, "Cannot authenticate :" + resp.getCode() + ":" + resp.getContentAsString());
+    	if(200 != resp.getCode()) {
+    		pLogger.log(TreeLogger.WARN, MessageFormat.format("Cannot authenticate :{0}:{1}", resp.getCode(), resp.getContentAsString()));
     	}
     }
     DesignDocument dd = null;
@@ -117,17 +118,15 @@ public final class CouchDBLinker extends AbstractLinker {
     	db.createDocument(dd);
     }
     for (EmittedArtifact artifact : pArtifacts) {
-      if (artifact.isPrivate()) {
-        // These artifacts won't be in the module output directory
-        continue;
-      }
+      if (!artifact.isPrivate()) {
+
       String path = artifact.getPartialPath();
       InputStream in = artifact.getContents(pLogger);
       byte[] buffer = new byte[4096];
       int read;
       ByteArrayOutputStream baos = new ByteArrayOutputStream(8192);
       try {
-        while ((read = in.read(buffer)) != -1) {
+        while (-1 != (read = in.read(buffer))) {
           baos.write(buffer, 0, read);
         }
         in.close();
@@ -136,8 +135,9 @@ public final class CouchDBLinker extends AbstractLinker {
       	dd = db.getDesignDocument(pContext.getModuleName());
         db.createAttachment(dd.getId(), dd.getRevision(), path, pMimeType, baos.toByteArray());
       } catch (Exception e) {
-        pLogger.log(TreeLogger.ERROR, "Unable to read/upload artifact " + artifact.getPartialPath(), e);
+        pLogger.log(TreeLogger.ERROR, MessageFormat.format("Unable to read/upload artifact {0}", artifact.getPartialPath()), e);
         throw new UnableToCompleteException();
+      }
       }
     }
   }

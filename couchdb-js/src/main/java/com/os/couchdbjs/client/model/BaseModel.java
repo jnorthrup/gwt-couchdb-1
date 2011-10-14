@@ -1,15 +1,13 @@
 package com.os.couchdbjs.client.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.DOM;
 
 public class BaseModel {
 	protected JSOModel m_data;
@@ -24,7 +22,7 @@ public class BaseModel {
 
 	public String get(String field) {
 		String val = this.m_data.get(field);
-		if (val != null && "null".equals(val) || "undefined".equals(val)) {
+		if (null != val && "null".equals(val) || "undefined".equals(val)) {
 			return null;
 		} else {
 			return escapeHtml(val);
@@ -37,7 +35,7 @@ public class BaseModel {
 
 	public Map<String, String> getFields() {
 		Map<String, String> fieldMap = new HashMap<String, String>();
-		if (m_data != null) {
+		if (null != m_data) {
 			JsArrayString array = m_data.keys();
 			for (int i = 0; i < array.length(); i++) {
 				fieldMap.put(array.get(i), m_data.get(array.get(i)));
@@ -48,12 +46,12 @@ public class BaseModel {
 
 	public <T extends BaseModel> Map<String, T> getObjectMap(String key,BaseModelFactory<T> pFactory) {
 		JSOModel attModel = m_data.getObject(key);
-		if (attModel != null) {
+		if (null != attModel) {
 			JsArrayString keys = attModel.keys();
 			Map<String, T> result = new HashMap<String, T>(keys.length());
 			for (int i =0;i < keys.length();i++) {
 				JSOModel jsoValue = attModel.getObject(keys.get(i));
-				if(jsoValue != null) {
+				if(null != jsoValue) {
 					result.put(keys.get(i), pFactory.createInstance(jsoValue));
 				} else {
 					result.put(keys.get(i), null);
@@ -67,7 +65,7 @@ public class BaseModel {
 
 	public <T extends BaseModel> T getObjectMapValue(String key,String name,BaseModelFactory<T> pFactory) {
 		JSOModel attModel = m_data.getObject(key);
-		if (attModel != null) {
+		if (null != attModel) {
 			return pFactory.createInstance(attModel.getObject(name));
 		} else {
 			return null;
@@ -75,7 +73,7 @@ public class BaseModel {
 	}
 	
 	public <T extends BaseModel> void setObjectMap(String pKey, Map<String, T> pMap) {
-		if(pMap == null || pMap.isEmpty()) {
+		if(null == pMap || pMap.isEmpty()) {
 			getModel().unset(pKey);
 		} else {
 			JSOModel jsoModel = JSOModel.create();
@@ -88,7 +86,7 @@ public class BaseModel {
 
 	public <T extends BaseModel> void addKeyValue(String pKey,String name, T pValue) {
 		JSOModel attModel = getModel().getObject(pKey);
-		if (attModel == null) {
+		if (null == attModel) {
 			attModel = JSOModel.create();
 			getModel().set(pKey, attModel);
 		}
@@ -100,7 +98,7 @@ public class BaseModel {
 		JsArray<JSOModel> jsoArray = getModel().getArray(pKey);
 		for(int i=0;i < jsoArray.length();i++) {
 			JSOModel jsoValue = jsoArray.get(i);
-			if(jsoValue != null) {
+			if(null != jsoValue) {
 				result.add(pFactory.createInstance(jsoValue));
 			} else {
 				result.add(null);
@@ -119,7 +117,7 @@ public class BaseModel {
 	
 	public Map<String, String> getStringMap(String key) {
 		JSOModel attModel = m_data.getObject(key);
-		if (attModel != null) {
+		if (null != attModel) {
 			JsArrayString keys = attModel.keys();
 			Map<String, String> result = new HashMap<String, String>(keys.length());
 			for (int i =0;i < keys.length();i++) {
@@ -133,7 +131,7 @@ public class BaseModel {
 
 	public String getStringMapValue(String key,String name) {
 		JSOModel attModel = m_data.getObject(key);
-		if (attModel != null) {
+		if (null != attModel) {
 			return attModel.get(name);
 		} else {
 			return null;
@@ -141,7 +139,7 @@ public class BaseModel {
 	}
 	
 	public void setStringMap(String pKey, Map<String, String> pMap) {
-		if(pMap == null || pMap.isEmpty()) {
+		if(null == pMap || pMap.isEmpty()) {
 			getModel().unset(pKey);
 		} else {
 			JSOModel jsoModel = JSOModel.create();
@@ -154,7 +152,7 @@ public class BaseModel {
 
 	public void addKeyValue(String pKey,String name, String pValue) {
 		JSOModel attModel = getModel().getObject(pKey);
-		if (attModel == null) {
+		if (null == attModel) {
 			attModel = JSOModel.create();
 			getModel().set(pKey, attModel);
 		}
@@ -166,7 +164,7 @@ public class BaseModel {
 		JsArrayString jsoArray = getModel().getStringArray(pKey);
 		for(int i=0;i < jsoArray.length();i++) {
 			String jsoValue = jsoArray.get(i);
-			if(jsoValue != null) {
+			if(null != jsoValue) {
 				result.add(jsoValue);
 			} else {
 				result.add(null);
