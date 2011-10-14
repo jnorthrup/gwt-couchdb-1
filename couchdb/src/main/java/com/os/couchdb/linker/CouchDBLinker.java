@@ -1,5 +1,13 @@
 package com.os.couchdb.linker;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+
 import com.google.gwt.core.ext.LinkerContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -10,15 +18,6 @@ import com.google.gwt.core.ext.linker.EmittedArtifact;
 import com.google.gwt.core.ext.linker.LinkerOrder;
 import com.google.gwt.core.ext.linker.LinkerOrder.Order;
 import com.os.couchdb.share.MediaTypeUtil;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-
 import org.jcouchdb.db.Database;
 import org.jcouchdb.db.Response;
 import org.jcouchdb.document.DesignDocument;

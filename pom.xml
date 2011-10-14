@@ -7,18 +7,12 @@
   <version>1.0-SNAPSHOT</version>
   <name>gwt-couchdb-parent</name><description>gwt-couchdb Terraformed... by jim@keyframe... on x86_64 x86_64 GNU/Linux... for  couchdb-js,couchdb,couchdb-js-test,couchdb-test... </description>
   <url>http://keyframe</url><scm><tag>HEAD</tag></scm>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+
   <modules>
     <module>couchdb-js</module>
     <module>couchdb</module>
     <module>couchdb-js-test</module>
     <module>couchdb-test</module>
+    <module>samplegwt</module>
   </modules>
 </project>

@@ -1,16 +1,5 @@
 package com.os.couchdbjs.linker;
 
-import com.google.gwt.core.ext.LinkerContext;
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.core.ext.linker.AbstractLinker;
-import com.google.gwt.core.ext.linker.ArtifactSet;
-import com.google.gwt.core.ext.linker.ConfigurationProperty;
-import com.google.gwt.core.ext.linker.EmittedArtifact;
-import com.google.gwt.core.ext.linker.LinkerOrder;
-import com.google.gwt.core.ext.linker.LinkerOrder.Order;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 
+import com.google.gwt.core.ext.LinkerContext;
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.linker.AbstractLinker;
+import com.google.gwt.core.ext.linker.ArtifactSet;
+import com.google.gwt.core.ext.linker.ConfigurationProperty;
+import com.google.gwt.core.ext.linker.EmittedArtifact;
+import com.google.gwt.core.ext.linker.LinkerOrder;
+import com.google.gwt.core.ext.linker.LinkerOrder.Order;
 import org.jcouchdb.db.Database;
 import org.jcouchdb.db.Response;
 import org.jcouchdb.document.DesignDocument;
