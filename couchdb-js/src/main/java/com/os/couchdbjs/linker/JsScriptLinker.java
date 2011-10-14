@@ -15,6 +15,7 @@ import com.google.gwt.core.ext.linker.LinkerOrder;
 import com.google.gwt.core.ext.linker.LinkerOrder.Order;
 import com.google.gwt.dev.About;
 import com.google.gwt.dev.util.DefaultTextOutput;
+import com.google.gwt.dev.util.TextOutput;
 import com.google.gwt.dev.util.Util;
 
 /**
@@ -57,27 +58,16 @@ public class JsScriptLinker extends AbstractLinker {
   }
   
   private String getPartialPath() {
-  	if("map".equals(m_jsType)) {
-  		return m_designName + "/views/" + m_name + "/map.js"; 
-  	} else if("reduce".equals(m_jsType)) {
-  		return m_designName + "/views/" + m_name + "/reduce.js"; 
-  	} else if("show".equals(m_jsType)) {
-  		return m_designName + "/shows/" + m_name + ".js"; 
-  	} else if("list".equals(m_jsType)) {
-  		return m_designName + "/lists/" + m_name + ".js"; 
-  	} else if("filter".equals(m_jsType)) {
-  		return m_designName + "/filters/" + m_name + ".js"; 
-  	} else if("fulltext".equals(m_jsType)) {
-  		return m_designName + "/fulltext/" + m_name + ".js"; 
-  	} else if("update".equals(m_jsType)) {
-  		return m_designName + "/update/" + m_name + ".js"; 
-  	} else if("validate".equals(m_jsType)) {
-  		return m_designName + "/validat_doc_update.js"; 
-  	}
-  	return null;
+
+    try {
+ return  ResponseType.valueOf(m_jsType).ppath(  m_designName, m_name);
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();  //todo: verify for a purpose
+    }
+    return null;
   }
-	
-	public ArtifactSet link(TreeLogger logger, LinkerContext context, ArtifactSet artifacts) throws UnableToCompleteException {
+
+  public ArtifactSet link(TreeLogger logger, LinkerContext context, ArtifactSet artifacts) throws UnableToCompleteException {
 		ArtifactSet toReturn = new ArtifactSet(artifacts);
 		setupParams(context);
 		toReturn.add(emitSelectionScript(logger, context, artifacts));
@@ -85,24 +75,9 @@ public class JsScriptLinker extends AbstractLinker {
 	}
 
 	protected EmittedArtifact emitSelectionScript(TreeLogger logger, LinkerContext context, ArtifactSet artifacts) throws UnableToCompleteException {
-		DefaultTextOutput out = new DefaultTextOutput(true);
-		if("map".equals(m_jsType)) {
-			out.print("function(doc) {");
-		} else if("reduce".equals(m_jsType)) {
-			out.print("function(keys,values) {");
-		} else if("show".equals(m_jsType)) {
-			out.print("function(doc,req) {");
-		} else if("list".equals(m_jsType)) {
-			out.print("function(head,req) {");
-		} else if("filter".equals(m_jsType)) {
-			out.print("function(doc,req) {");
-		} else if("fulltext".equals(m_jsType)) {
-			out.print("function(doc) {");
-		} else if("validate".equals(m_jsType)) {
-			out.print("function(newDoc,oldDoc,userCtx) {");
-		} else if("update".equals(m_jsType)) {
-			out.print("function(doc,req) {");
-		}
+		TextOutput out = new DefaultTextOutput(true);
+    ResponseType responseType = ResponseType.valueOf(m_jsType);
+    out.print(responseType.stopen);
 		out.newlineOpt();
 		out.print("var global_gwt = {};");
 		out.newlineOpt();
@@ -131,23 +106,9 @@ public class JsScriptLinker extends AbstractLinker {
 		out.print("gwtOnLoad(null,null,null);");
 		out.print("})();");
 		out.newlineOpt();
-		if("map".equals(m_jsType)) {
-			out.print("global_gwt.map(doc);");
-		} else if("reduce".equals(m_jsType)) {
-			out.print("return global_gwt.reduce(keys,values);");
-		} else if("show".equals(m_jsType)) {
-			out.print("return global_gwt.show(doc,req);");
-		} else if("list".equals(m_jsType)) {
-			out.print("return global_gwt.list(head,req);");
-		} else if("filter".equals(m_jsType)) {
-			out.print("return global_gwt.filter(doc,req);");
-		} else if("fulltext".equals(m_jsType)) {
-			out.print("return global_gwt.fulltext(doc);");
-		} else if("validate".equals(m_jsType)) {
-			out.print("global_gwt.validate(newDoc,oldDoc,userCtx);");
-		} else if("update".equals(m_jsType)) {
-			out.print("return global_gwt.update(doc,req);");
-		}
+
+              out.print(responseType.stclose );
+
 		out.newlineOpt();
 		out.print("};");
 		out.newlineOpt();
