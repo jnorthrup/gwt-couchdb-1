@@ -9,7 +9,7 @@ public class ValueAndDocumentRow<D extends BaseDocument> extends ValueRow {
 	
 	public D getDocument(BaseModelFactory<D> pDocFactory) {
 		if(m_doc == null) {
-			m_doc = pDocFactory.createInstance(super.getModel().getObject("doc"));
+			m_doc = pDocFactory.createInstance(getModel().getObject("doc"));
 		}
 		return m_doc;
 	}
